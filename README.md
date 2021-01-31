@@ -19,7 +19,7 @@ In your module, specify a base domain name that all resources will be subdomains
 
 module "simple-browser-auth" {
 
-  source = "git@github.com:deadsimpleauth/simple-browser-auth.git/module{}"
+  source = "git@github.com:deadsimpleauth/simple-browser-auth.git/module"
 
   base_okta_url    = "example.okta.com"
   base_domain_name = "deadsimpleauth.com"
