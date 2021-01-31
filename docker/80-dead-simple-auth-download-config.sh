@@ -18,4 +18,4 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048  -out
 aws s3 sync s3://$DSA_S3_BUCKET/$DSA_CONFIG_S3_PATH /etc/nginx/conf.d/
 
 ## Test and Reload Config
-nginx -tcd
+nginx -t
