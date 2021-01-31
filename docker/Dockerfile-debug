@@ -1,0 +1,18 @@
+# enables SSH for a shell to debug. Does not run nginx by default
+FROM deadsimpleauth/nginx:latest
+
+ENTRYPOINT ["/bin/bash", "/docker-entrypoint.sh"]
+
+RUN apt-get -y install openssh-server \
+    && mkdir -p ~/.ssh \
+    && echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHeJ9WRb8l4Mi5ggN+SlAvOuCCW1NobiaV8oFns3bRBG72IihyDR8ckhAathGvnS+BQR6xS+7yHGnqkHh9i/4CW1nQ4t40M+AHCsUrXyPCYZ8J27XqaKibbnSSccFGZohJR0b5gtu+A4CKc/aL4tyyiO+0NAkQQFyEk5taik73a/y64hFuVe2iomK1avGvH9uQEeWQgiA3Ix320Kf0Q1TZlKbdPckLdNIHb32D3Ms/BrlZlz2qDB96oFL4HCv9JWKbXSizvOcHIvWHyRHq6iW8x99Zv8q1CFC79Jro82RGj1Eiq8UfiO8p7yB+zVH4/4+LirnmxIFweUvLe6j9fyNfvM5ulG2QS4hbmc6bf6RAURqvrc6Hyw6Vq9l636hgBZXykAeeSJkWYYpg3pB9Jtoyrbp4FsZgHGiPP3rnv/PY1yGhF/w2hL9yUzqy7wm0r1J3h3Z26IDvrj1ZIdsHCFJmg3x+0+cpJwS7RgGr3lZR/dmJERAyTRk+QRwMqW5+z/UOX8m3vJu8iVhrDr6hkrQts2KMydi7uabeFJcg40AsdivDiEyXAHuJfTtOLQ5YjTzBPUepiBBMpyg0fuxHHn3Q74QAAusttni3BOb8fYkPES/+VNtH9+PntkESvFY1M1LmP2By3XZPQ3IRY6NTJKEbbjZjRphRdufZuP6mCA3n7Q==" > ~/.ssh/authorized_keys
+
+RUN mv /docker-entrypoint.d/80-dead-simple-auth-download-config.sh ~/
+
+COPY ./docker/40-dead-simple-auth-debug-start-ssh.sh /docker-entrypoint.d/
+
+EXPOSE 80 22
+
+STOPSIGNAL SIGQUIT
+
+CMD ["nginx", "-g", "daemon off;"]
